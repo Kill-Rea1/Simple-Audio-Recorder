@@ -59,11 +59,11 @@ final class ListController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return records.count
+        return records.isEmpty ? 1 : records.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return records[section].count
+        return records.isEmpty ? 0 : records[section].count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -99,6 +99,21 @@ final class ListController: UITableViewController {
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         tableView.endUpdates()
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return records.isEmpty ? 250 : 0
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let label = UILabel()
+        let attributedString = NSMutableAttributedString(string: "No records available\n\n\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20), NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
+        attributedString.append(NSMutableAttributedString(string: "Please record some sounds \nand they will available here", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]))
+        label.numberOfLines = 0
+        label.attributedText = attributedString
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
     }
 }
 
